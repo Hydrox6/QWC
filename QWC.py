@@ -1,6 +1,8 @@
 from Tkinter import *
 from ScrolledText import ScrolledText
+import base64
 
+root = Tk()
 
 def doCount():
     pass#STUB
@@ -8,27 +10,22 @@ def doCount():
 def openFile():
     pass#STUB
 
-def swapspace(widgetL,widgetV,stringvar,text):
-    widgetL["text"] = text
-    widgetV["textvariable"] = stringvar
-    
+##BASE64 IMAGES
+icon_settings_off_raw   = "R0lGODlhIAAgAPcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAgACAAAAiQAP8JHEiwoMGDCBMqXMjwHwAADSMKfPhQIkGKBilCLIgRocaNEz9e1Ojxo8mTIg+iXHkyIcuXIEvCNMlwZsuFN0emVEhT5U6ZHYFW9NlTaNCQOYkWdYiSZ1OdPzMmhTrUKM6oA5cajYmU5FWbXp2CPap0bFWpZrF2TXuWKtWYapGi5cqUbsOwFp3m3cu3b8GAADs="
+icon_settings_on_raw    = "R0lGODlhIAAgAPcAAAAAAGZmZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAgACAAAAivAP8JHEiwoMGDCBMqXMjwHwAADSMKBBAgAESJAx9eJEjRokGNCTt6zFix4kaHJU9yLGlRI0uTLlMiFPmyps2RB2nevKny486dPX2+1BiTZdCCOnsmZUjzaNOFT0ManblUqlGVOk0qzIoTZc2jE21irTpzqNOpVrVuRStU7Vq2JOGWNUv0K9OfPKHiBZp2r9i5MB9+Ldp1pVuvh0WCBYn08MSHGOOCjZxxMuXLmBkGBAA7"
+##BASE64 END
+icon_settings_off       = PhotoImage(data=icon_settings_off_raw)
+icon_settings_on        = PhotoImage(data=icon_settings_on_raw)
 
-root = Tk()
+
 
 ##VARIABLES
 wwq = StringVar()#WORDS WITH QUOTES
 wwq.set("0")
-cwq = StringVar()#CHARACTERS WITH QUOTES (SPACES)
-cwq.set("0")
-cwqn = StringVar()#CHARACTERS WITH QUOTES (NO SPACES)
-cwqn.set("1")
 
 wwoq = StringVar()#WORDS WITHOUT QUOTES
 wwoq.set("0")
-cwoq = StringVar()#CHARACTERS WITHOUT QUOTES (SPACES)
-cwoq.set("0")
-cwoqn = StringVar()#CHARACTERS WITHOUT QUOTES (NO SPACES)
-cwoqn.set("1")
+
 
 
 ##TOPBAR
@@ -44,46 +41,73 @@ openB = Button(topbarLeft, height=2, command=openFile,text="Open",width=10)
 openB.grid(row=0,column=0,padx=5,pady=5)
 
 ##TOPBARMID
-totalwq = Frame(topbarMid)
-totalwq.grid(row=0,column=0,sticky="w")
-totalwqL = Label(totalwq,text="Total With Quotes")
-totalwqL.grid(row=0,column=0,columnspan=2)
+twq = Frame(topbarMid)
+twq.grid(row=0,column=0,sticky="e")
 
-twordswqL = Label(totalwq,text="Words: ")
-twordswqL.grid(row=1,column=0)
+twql = Label(twq,text="With Quotes:")
+twql.grid(row=0,column=0)
 
-twordswqV = Label(totalwq,textvar=wwq)
-twordswqV.grid(row=1,column=1)
+twqv = Label(twq,textvar=wwq)
+twqv.grid(row=1,column=0)
 
-tcharswqL = Label(totalwq,text="Chars (w/ spaces): ")
-tcharswqL.grid(row=2,column=0)
+Canvas(topbarMid,width=40,height=1).grid(row=0,column=1)
 
 
-tcharswqV = Label(totalwq,textvar=cwq)
-tcharswqV.grid(row=2,column=1)
-tcharswqL.bind("<Enter>", lambda e,text="Without Spaces: ",wL=tcharswqL,wV=tcharswqV,v=cwqn: swapspace(wL,wV,v,text))
-tcharswqL.bind("<Leave>", lambda e,text="Chars (w/ spaces): ",wL=tcharswqL,wV=tcharswqV,v=cwq: swapspace(wL,wV,v,text))
+twoq = Frame(topbarMid)
+twoq.grid(row=0,column=2,sticky="w")
 
-totalwoq = Frame(topbarMid)
-totalwoq.grid(row=0,column=3,sticky="e")
-totalwoqL = Label(totalwoq,text="Total Without Quotes")
-totalwoqL.grid(row=0,column=0,columnspan=2)
+twoql = Label(twoq,text="Without Quotes:")
+twoql.grid(row=0,column=0)
 
-twordswoqL = Label(totalwoq,text="Words: ")
-twordswoqL.grid(row=1,column=0)
-
-twordswoqV = Label(totalwoq,textvar=wwoq)
-twordswoqV.grid(row=1,column=1)
-
-tcharswoqL = Label(totalwoq,text="Chars (w/ spaces): ")
-tcharswoqL.grid(row=2,column=0)
+twoqv = Label(twoq,textvar=wwoq)
+twoqv.grid(row=1,column=0)
 
 
-tcharswoqV = Label(totalwq,textvar=cwoq)
-tcharswoqV.grid(row=2,column=1)
-tcharswoqL.bind("<Enter>", lambda e,text="Without Spaces: ",wL=tcharswoqL,wV=tcharswoqV,v=cwoqn: swapspace(wL,wV,v,text))
-tcharswoqL.bind("<Leave>", lambda e,text="Chars (w/ spaces): ",wL=tcharswoqL,wV=tcharswoqV,v=cwoq: swapspace(wL,wV,v,text))
 ##TOPBARRIGHT
+
+def destroyCheck():
+    global settingsMenu
+    settingsMenu.destroy()
+    settingsMenu = None
+    root.unbind("<Motion>")
+        
+def onMove(e):
+    currentx = e.x_root
+    currenty = e.y_root
+    if (currentx > boundMenux[1]) or (currenty > boundMenuy[1]) or (currentx < boundMenux[0] and currenty > boundMenuy[0]) or (currentx < boundPathx and currenty < boundMenuy[0]):
+        destroyCheck()
+    
+boundMenux = None
+boundMenuy = None
+boundPathx = None
+def onSettingsEnter(e):
+    global settingsMenu,boundMenux,boundMenuy,boundPathx,boundPathy
+    if settingsMenu == None:
+        root.bind("<Motion>",onMove)
+        ##WINDOWVARS
+        width = 300
+        height = 400
+        offsetx = options.winfo_rootx()-width+41
+        offsety = options.winfo_rooty()+44
+        boundMenux = [offsetx,offsetx+width]
+        boundMenuy = [offsety,offsety+height]
+        boundPathx = offsetx+width-41
+        ##WINDOWVARS END
+        top = Toplevel()
+        top.geometry("{x}x{y}+{ox}+{oy}".format(x=width,y=height,ox=offsetx,oy=offsety))
+        top.overrideredirect(1)
+        Label(top,text="Hello World!").pack()
+        settingsMenu = top
+
+
+
+exitMenu = True
+exitPath = True
+settingsMenu = None
+
+options = Label(topbarRight,image=icon_settings_off)
+options.grid(row=0,column=999,padx=5,pady=5)
+options.bind("<Enter>",onSettingsEnter)
 
 
 main = ScrolledText(root,width=120,height=30)
