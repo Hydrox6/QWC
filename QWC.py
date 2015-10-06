@@ -1,11 +1,26 @@
+# -*- coding: utf8 -*-
 from Tkinter import *
 from ScrolledText import ScrolledText
 import base64
 
 root = Tk()
 
-def doCount():
-    pass#STUB
+def doCount(s):
+    s = s.replace("\n"," ")
+    sl = s.split(" ")
+    totalQ = 0
+    total = 0
+    q = False
+    for x in range(0,len(sl)):
+        i = sl[x].encode("utf-8")
+        if not i == "":
+            totalQ += 1
+            #if not (u'“' in i and u'”' in i) or not i.count('"') == 2:
+            if not (options["startChar"] in i and options["endChar"] in i):
+                if options["startChar"] in i or options["endChar"] in i:
+                    q = not q
+                else:
+                    if not q:total += 1
 
 def openFile():
     pass#STUB
@@ -16,6 +31,7 @@ icon_settings_on_raw    = "R0lGODlhIAAgAPcAAAAAAGZmZgAAAAAAAAAAAAAAAAAAAAAAAAAAA
 ##BASE64 END
 icon_settings_off       = PhotoImage(data=icon_settings_off_raw)
 icon_settings_on        = PhotoImage(data=icon_settings_on_raw)
+
 
 
 
@@ -37,8 +53,10 @@ topbarRight = Frame(root)
 topbarRight.grid(row=0,column=0,sticky="e")
 
 ##TOPBARLEFT
+#toggleCountB = Button(topbarLeft,height=2,command=toggleCount)
 openB = Button(topbarLeft, height=2, command=openFile,text="Open",width=10)
-openB.grid(row=0,column=0,padx=5,pady=5)
+openB.grid(row=0,column=1,padx=5,pady=5)
+
 
 ##TOPBARMID
 twq = Frame(topbarMid)
@@ -67,6 +85,7 @@ twoqv.grid(row=1,column=0)
 
 def destroyCheck():
     global settingsMenu
+    options.config(image=icon_settings_off)
     settingsMenu.destroy()
     settingsMenu = None
     root.unbind("<Motion>")
@@ -83,6 +102,7 @@ boundPathx = None
 def onSettingsEnter(e):
     global settingsMenu,boundMenux,boundMenuy,boundPathx,boundPathy
     if settingsMenu == None:
+        options.config(image=icon_settings_on)
         root.bind("<Motion>",onMove)
         ##WINDOWVARS
         width = 300
